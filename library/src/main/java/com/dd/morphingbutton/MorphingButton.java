@@ -25,6 +25,12 @@ public class MorphingButton extends Button {
     private int mCornerRadius;
     private int mStrokeWidth;
     private int mStrokeColor;
+    
+    public int cornerRadius;
+    public int color;
+    public int strokeColor;
+    public int pressedColor;
+    public int strokeWidth;
 
     protected boolean mAnimationInProgress;
 
@@ -164,16 +170,18 @@ public class MorphingButton extends Button {
         mPadding.bottom = getPaddingBottom();
 
         Resources resources = getResources();
-        int cornerRadius = (int) resources.getDimension(R.dimen.mb_corner_radius_2);
-        int blue = resources.getColor(R.color.mb_blue);
-        int blueDark = resources.getColor(R.color.mb_blue_dark);
+        int cornerRadius = self.cornerRadius;
+        int color = self.color;
+        int pressedColor = self.pressedColor;
+        int strokeColor = self.strokeColor;
+        int strokeWidth = self.strokeWidth;
 
         StateListDrawable background = new StateListDrawable();
-        mDrawableNormal = createDrawable(blue, cornerRadius, 0);
-        mDrawablePressed = createDrawable(blueDark, cornerRadius, 0);
+        mDrawableNormal = createDrawable(color, cornerRadius, strokeWidth, strokeColor);
+        mDrawablePressed = createDrawable(pressedColor, cornerRadius, strokeWidth, strokeColor);
 
-        mColor = blue;
-        mStrokeColor = blue;
+        mColor = color;
+        mStrokeColor = strokeColor;
         mCornerRadius = cornerRadius;
 
         background.addState(new int[]{android.R.attr.state_pressed}, mDrawablePressed.getGradientDrawable());
@@ -182,12 +190,12 @@ public class MorphingButton extends Button {
         setBackgroundCompat(background);
     }
 
-    private StrokeGradientDrawable createDrawable(int color, int cornerRadius, int strokeWidth) {
+    private StrokeGradientDrawable createDrawable(int color, int cornerRadius, int strokeWidth, int strokeColor) {
         StrokeGradientDrawable drawable = new StrokeGradientDrawable(new GradientDrawable());
         drawable.getGradientDrawable().setShape(GradientDrawable.RECTANGLE);
         drawable.setColor(color);
         drawable.setCornerRadius(cornerRadius);
-        drawable.setStrokeColor(color);
+        drawable.setStrokeColor(strokeColor);
         drawable.setStrokeWidth(strokeWidth);
 
         return drawable;
