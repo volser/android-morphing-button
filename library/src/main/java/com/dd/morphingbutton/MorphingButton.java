@@ -156,6 +156,10 @@ public class MorphingButton extends Button {
         });
     }
 
+    protected TypedArray getTypedArray(Context context, AttributeSet attributeSet, int[] attr) {
+        return context.obtainStyledAttributes(attributeSet, attr, 0, 0);
+    }
+    
     private void initView(Context context, AttributeSet attributeSet) {
         mPadding = new Padding();
         mPadding.left = getPaddingLeft();
