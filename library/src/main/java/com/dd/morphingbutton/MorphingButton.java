@@ -33,17 +33,17 @@ public class MorphingButton extends Button {
 
     public MorphingButton(Context context) {
         super(context);
-        initView();
+        initView(context, null);
     }
 
     public MorphingButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initView();
+        initView(context, attrs);
     }
 
     public MorphingButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initView();
+        initView(context, attrs);
     }
 
     @Override
@@ -156,7 +156,7 @@ public class MorphingButton extends Button {
         });
     }
 
-    private void initView() {
+    private void initView(Context context, AttributeSet attributeSet) {
         mPadding = new Padding();
         mPadding.left = getPaddingLeft();
         mPadding.right = getPaddingRight();
