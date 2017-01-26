@@ -25,12 +25,6 @@ public class MorphingButton extends Button {
     private int mCornerRadius;
     private int mStrokeWidth;
     private int mStrokeColor;
-    
-    public int cornerRadius;
-    public int color;
-    public int strokeColor;
-    public int pressedColor;
-    public int strokeWidth;
 
     protected boolean mAnimationInProgress;
 
@@ -170,11 +164,12 @@ public class MorphingButton extends Button {
         mPadding.bottom = getPaddingBottom();
 
         Resources resources = getResources();
-        int cornerRadius = this.cornerRadius;
-        int color = this.color;
-        int pressedColor = this.pressedColor;
-        int strokeColor = this.strokeColor;
-        int strokeWidth = this.strokeWidth;
+        TypedArray attr = getTypedArray(context, attributeSet, R.styleable.MorphingButton);
+        int color =         attr.getColor(R.styleable.MorphingButton_mb_color, resources.getColor(R.color.mb_blue));
+        int pressedColor =  attr.getColor(R.styleable.MorphingButton_mb_pressedColor, resources.getColor(R.color.mb_blue_dark));
+        int strokeColor =   attr.getColor(R.styleable.MorphingButton_mb_strokeColor, resources.getColor(R.color.mb_blue));
+        int strokeWidth =   attr.getDimension(R.styleable.MorphingButton_mb_strokeWidth, 0);
+        int cornerRadius =  attr.getDimension(R.styleable.MorphingButton_mb_cornerRadius, 2);
 
         StateListDrawable background = new StateListDrawable();
         mDrawableNormal = createDrawable(color, cornerRadius, strokeWidth, strokeColor);
