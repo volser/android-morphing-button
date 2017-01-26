@@ -170,11 +170,11 @@ public class MorphingButton extends Button {
         mPadding.bottom = getPaddingBottom();
 
         Resources resources = getResources();
-        int cornerRadius = self.cornerRadius;
-        int color = self.color;
-        int pressedColor = self.pressedColor;
-        int strokeColor = self.strokeColor;
-        int strokeWidth = self.strokeWidth;
+        int cornerRadius = this.cornerRadius;
+        int color = this.color;
+        int pressedColor = this.pressedColor;
+        int strokeColor = this.strokeColor;
+        int strokeWidth = this.strokeWidth;
 
         StateListDrawable background = new StateListDrawable();
         mDrawableNormal = createDrawable(color, cornerRadius, strokeWidth, strokeColor);
