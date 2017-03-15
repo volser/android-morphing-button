@@ -62,16 +62,14 @@ public class SemiCircleDrawable extends Drawable {
 
         Paint strokePaint = new Paint();
         strokePaint.setColor(this.strokeColor);
-        strokePaint.setStyle(Paint.Style.FILL);
+        strokePaint.setStyle(Paint.Style.STROKE);
         strokePaint.setStrokeWidth(this.strokeWidth);
         canvas.drawArc(rectF, this.startAngle, this.endAngle, true, strokePaint);
 
-        if (this.fillColor != 0) {
             Paint fillPaint = new Paint();
             fillPaint.setColor(this.fillColor);
             fillPaint.setStyle(Paint.Style.FILL);
             canvas.drawCircle(bounds.centerX(), bounds.centerY(), bounds.width() / 2, fillPaint);
-        }
     }
 
     @Override
