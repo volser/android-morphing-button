@@ -102,7 +102,7 @@ public class MorphingButton extends Button {
                 .height(getHeight(), params.height)
                 .width(getWidth(), params.width)
                 .duration(params.duration)
-                .angle(mStartAngle, params.startAngle, mEndAngle, params.endAngle)
+                .angle(mStartAngle, mEndAngle, params.startAngle, params.endAngle)
                 .listener(new MorphingAnimation.Listener() {
                     @Override
                     public void onAnimationEnd() {
