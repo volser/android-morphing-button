@@ -4,8 +4,9 @@
         <attr name="mb_color" format="color"/>
         <attr name="mb_strokeColor" format="color"/>
         <attr name="mb_pressedColor" format="color"/>
-        <attr name="mb_cornerRadius" format="dimension"/>
         <attr name="mb_strokeWidth" format="dimension"/>
+        <attr name="mb_startAngle" format="dimension"/>
+        <attr name="mb_endAngle" format="dimension"/>
     </declare-styleable>
     
 </resources>

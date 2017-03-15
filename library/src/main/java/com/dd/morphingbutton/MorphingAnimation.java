@@ -12,9 +12,6 @@ public class MorphingAnimation {
 
     public static class Params {
 
-        private float fromCornerRadius;
-        private float toCornerRadius;
-
         private int fromHeight;
         private int toHeight;
 
@@ -31,6 +28,12 @@ public class MorphingAnimation {
 
         private int fromStrokeColor;
         private int toStrokeColor;
+
+        private float fromStartAngle;
+        private float toStartAngle;
+
+        private float fromEndAngle;
+        private float toEndAngle;
 
         private MorphingButton button;
         private MorphingAnimation.Listener animationListener;
@@ -59,12 +62,6 @@ public class MorphingAnimation {
             return this;
         }
 
-        public Params cornerRadius(int fromCornerRadius, int toCornerRadius) {
-            this.fromCornerRadius = fromCornerRadius;
-            this.toCornerRadius = toCornerRadius;
-            return this;
-        }
-
         public Params height(int fromHeight, int toHeight) {
             this.fromHeight = fromHeight;
             this.toHeight = toHeight;
@@ -89,6 +86,14 @@ public class MorphingAnimation {
             return this;
         }
 
+        public Params angle(float fromStart, float fromEnd, float toStart, float toEnd) {
+            this.fromStartAngle = fromStart;
+            this.fromEndAngle = fromEnd;
+            this.toStartAngle = toStart;
+            this.toEndAngle = toEnd;
+            return this;
+        }
+
     }
 
     private Params mParams;
@@ -98,10 +103,12 @@ public class MorphingAnimation {
     }
 
     public void start() {
-        StrokeGradientDrawable background = mParams.button.getDrawableNormal();
+        SemiCircleDrawable background = mParams.button.getDrawableNormal();
 
-        ObjectAnimator cornerAnimation =
-                ObjectAnimator.ofFloat(background, "cornerRadius", mParams.fromCornerRadius, mParams.toCornerRadius);
+        ObjectAnimator startAngleAnimation =
+                ObjectAnimator.ofFloat(background, "startAngle", mParams.fromStartAngle, mParams.toStartAngle);
+        ObjectAnimator endAngleAnimation =
+                ObjectAnimator.ofFloat(background, "endAngle", mParams.fromEndAngle, mParams.toEndAngle);
 
         ObjectAnimator strokeWidthAnimation =
                 ObjectAnimator.ofInt(background, "strokeWidth", mParams.fromStrokeWidth, mParams.toStrokeWidth);
@@ -109,7 +116,7 @@ public class MorphingAnimation {
         ObjectAnimator strokeColorAnimation = ObjectAnimator.ofInt(background, "strokeColor", mParams.fromStrokeColor, mParams.toStrokeColor);
         strokeColorAnimation.setEvaluator(new ArgbEvaluator());
 
-        ObjectAnimator bgColorAnimation = ObjectAnimator.ofInt(background, "color", mParams.fromColor, mParams.toColor);
+        ObjectAnimator bgColorAnimation = ObjectAnimator.ofInt(background, "fillColor", mParams.fromColor, mParams.toColor);
         bgColorAnimation.setEvaluator(new ArgbEvaluator());
 
         ValueAnimator heightAnimation = ValueAnimator.ofInt(mParams.fromHeight, mParams.toHeight);
@@ -136,7 +143,7 @@ public class MorphingAnimation {
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.setDuration(mParams.duration);
-        animatorSet.playTogether(strokeWidthAnimation, strokeColorAnimation, cornerAnimation, bgColorAnimation,
+        animatorSet.playTogether(strokeWidthAnimation, strokeColorAnimation, startAngleAnimation, endAngleAnimation, bgColorAnimation,
                 heightAnimation, widthAnimation);
         animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override

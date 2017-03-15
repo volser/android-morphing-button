@@ -74,7 +74,8 @@ public class LinearProgressButton extends MorphingButton implements IProgress {
 
         MorphingButton.Params longRoundedSquare = MorphingButton.Params.create()
                 .duration(duration)
-                .cornerRadius(mProgressCornerRadius)
+                .startAngle(0)
+                .endAngle(360)
                 .width(width)
                 .height(height)
                 .color(color)

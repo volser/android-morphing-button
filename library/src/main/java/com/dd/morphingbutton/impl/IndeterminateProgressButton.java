@@ -99,7 +99,8 @@ public class IndeterminateProgressButton extends MorphingButton {
 
         Params longRoundedSquare = Params.create()
                 .duration(duration)
-                .cornerRadius(mProgressCornerRadius)
+                .startAngle(0)
+                .endAngle(360)
                 .width(width)
                 .height(height)
                 .color(backgroundColor)

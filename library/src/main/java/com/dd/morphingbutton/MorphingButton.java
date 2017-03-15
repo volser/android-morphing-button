@@ -23,14 +23,15 @@ public class MorphingButton extends Button {
     private int mHeight;
     private int mWidth;
     private int mColor;
-    private int mCornerRadius;
     private int mStrokeWidth;
     private int mStrokeColor;
+    private float mStartAngle;
+    private float mEndAngle;
 
     protected boolean mAnimationInProgress;
 
-    private StrokeGradientDrawable mDrawableNormal;
-    private StrokeGradientDrawable mDrawablePressed;
+    private SemiCircleDrawable mDrawableNormal;
+    private SemiCircleDrawable mDrawablePressed;
 
     public MorphingButton(Context context) {
         super(context);
@@ -56,17 +57,23 @@ public class MorphingButton extends Button {
         }
     }
 
-    public StrokeGradientDrawable getDrawableNormal() {
+    public SemiCircleDrawable getDrawableNormal() {
         return mDrawableNormal;
     }
 
     public void morph(@NonNull Params params) {
         if (!mAnimationInProgress) {
 
-            mDrawablePressed.setColor(params.colorPressed);
-            mDrawablePressed.setCornerRadius(params.cornerRadius);
-            mDrawablePressed.setStrokeColor(params.strokeColor);
-            mDrawablePressed.setStrokeWidth(params.strokeWidth);
+            mDrawablePressed.fillColor = params.colorPressed;
+            mDrawablePressed.strokeColor = params.strokeColor;
+            mDrawablePressed.strokeWidth = params.strokeWidth;
+            mDrawablePressed.startAngle = params.startAngle;
+            mDrawablePressed.endAngle = params.endAngle;
+
+//            mDrawablePressed.setColor(params.colorPressed);
+//            mDrawablePressed.setCornerRadius(params.cornerRadius);
+//            mDrawablePressed.setStrokeColor(params.strokeColor);
+//            mDrawablePressed.setStrokeWidth(params.strokeWidth);
 
             if (params.duration == 0) {
                 morphWithoutAnimation(params);
@@ -74,8 +81,9 @@ public class MorphingButton extends Button {
                 morphWithAnimation(params);
             }
 
+            mStartAngle = params.startAngle;
+            mEndAngle = params.endAngle;
             mColor = params.color;
-            mCornerRadius = params.cornerRadius;
             mStrokeWidth = params.strokeWidth;
             mStrokeColor = params.strokeColor;
         }
@@ -89,12 +97,12 @@ public class MorphingButton extends Button {
 
         MorphingAnimation.Params animationParams = MorphingAnimation.Params.create(this)
                 .color(mColor, params.color)
-                .cornerRadius(mCornerRadius, params.cornerRadius)
                 .strokeWidth(mStrokeWidth, params.strokeWidth)
                 .strokeColor(mStrokeColor, params.strokeColor)
                 .height(getHeight(), params.height)
                 .width(getWidth(), params.width)
                 .duration(params.duration)
+                .angle(mStartAngle, params.startAngle, mEndAngle, params.endAngle)
                 .listener(new MorphingAnimation.Listener() {
                     @Override
                     public void onAnimationEnd() {
@@ -107,10 +115,16 @@ public class MorphingButton extends Button {
     }
 
     private void morphWithoutAnimation(@NonNull Params params) {
-        mDrawableNormal.setColor(params.color);
-        mDrawableNormal.setCornerRadius(params.cornerRadius);
-        mDrawableNormal.setStrokeColor(params.strokeColor);
-        mDrawableNormal.setStrokeWidth(params.strokeWidth);
+        mDrawableNormal.fillColor = params.color;
+        mDrawableNormal.strokeColor = params.strokeColor;
+        mDrawableNormal.strokeWidth = params.strokeWidth;
+        mDrawableNormal.startAngle = params.startAngle;
+        mDrawableNormal.endAngle = params.endAngle;
+
+//        mDrawableNormal.setColor(params.color);
+//        mDrawableNormal.setCornerRadius(params.cornerRadius);
+//        mDrawableNormal.setStrokeColor(params.strokeColor);
+//        mDrawableNormal.setStrokeWidth(params.strokeWidth);
 
         if(params.width != 0 && params.height !=0) {
             ViewGroup.LayoutParams layoutParams = getLayoutParams();
@@ -174,29 +188,29 @@ public class MorphingButton extends Button {
         int pressedColor =  attr.getColor(R.styleable.MorphingButton_mb_pressedColor, resources.getColor(R.color.mb_blue_dark));
         int strokeColor =   attr.getColor(R.styleable.MorphingButton_mb_strokeColor, resources.getColor(R.color.mb_blue));
         float strokeWidth =   attr.getDimension(R.styleable.MorphingButton_mb_strokeWidth, 0);
-        int cornerRadius =  (int) attr.getDimension(R.styleable.MorphingButton_mb_cornerRadius, 2);
+        float startAngle =   attr.getDimension(R.styleable.MorphingButton_mb_startAngle, 0);
+        float endAngle =   attr.getDimension(R.styleable.MorphingButton_mb_endAngle, 0);
 
         StateListDrawable background = new StateListDrawable();
-        mDrawableNormal = createDrawable(color, cornerRadius, strokeWidth, strokeColor);
-        mDrawablePressed = createDrawable(pressedColor, cornerRadius, strokeWidth, strokeColor);
+        mDrawableNormal = createDrawable(color, strokeWidth, strokeColor, startAngle, endAngle);
+        mDrawablePressed = createDrawable(pressedColor, strokeWidth, strokeColor, startAngle, endAngle);
 
         mColor = color;
         mStrokeColor = strokeColor;
-        mCornerRadius = cornerRadius;
+        mStartAngle = startAngle;
+        mEndAngle = endAngle;
 
-        background.addState(new int[]{android.R.attr.state_pressed}, mDrawablePressed.getGradientDrawable());
-        background.addState(StateSet.WILD_CARD, mDrawableNormal.getGradientDrawable());
+        background.addState(new int[]{android.R.attr.state_pressed}, mDrawablePressed);
+        background.addState(StateSet.WILD_CARD, mDrawableNormal);
 
         setBackgroundCompat(background);
     }
 
-    private StrokeGradientDrawable createDrawable(int color, int cornerRadius, float strokeWidth, int strokeColor) {
-        StrokeGradientDrawable drawable = new StrokeGradientDrawable(new GradientDrawable());
-        drawable.getGradientDrawable().setShape(GradientDrawable.RECTANGLE);
-        drawable.setColor(color);
-        drawable.setCornerRadius(cornerRadius);
-        drawable.setStrokeColor(strokeColor);
-        drawable.setStrokeWidth((int)strokeWidth);
+    private SemiCircleDrawable createDrawable(int color, float strokeWidth, int strokeColor,
+                                              float startAngle, float endAngle) {
+        SemiCircleDrawable drawable = new SemiCircleDrawable(color, startAngle, endAngle);
+        drawable.strokeColor = strokeColor;
+        drawable.strokeWidth = strokeWidth;
 
         return drawable;
     }
@@ -235,7 +249,6 @@ public class MorphingButton extends Button {
     }
 
     public static class Params {
-        private int cornerRadius;
         private int width;
         private int height;
         private int color;
@@ -244,6 +257,8 @@ public class MorphingButton extends Button {
         private int icon;
         private int strokeWidth;
         private int strokeColor;
+        private float startAngle;
+        private float endAngle;
         private String text;
         private MorphingAnimation.Listener animationListener;
 
@@ -260,13 +275,20 @@ public class MorphingButton extends Button {
             return this;
         }
 
-        public Params icon(@DrawableRes int icon) {
-            this.icon = icon;
+        public Params startAngle(float angle)
+        {
+            this.startAngle = angle;
             return this;
         }
 
-        public Params cornerRadius(int cornerRadius) {
-            this.cornerRadius = cornerRadius;
+        public Params endAngle(float angle)
+        {
+            this.endAngle = angle;
+            return this;
+        }
+
+        public Params icon(@DrawableRes int icon) {
+            this.icon = icon;
             return this;
         }
 
