@@ -189,7 +189,7 @@ public class MorphingButton extends Button {
         int strokeColor =   attr.getColor(R.styleable.MorphingButton_mb_strokeColor, resources.getColor(R.color.mb_blue));
         float strokeWidth =   attr.getDimension(R.styleable.MorphingButton_mb_strokeWidth, 0);
         float startAngle =   attr.getDimension(R.styleable.MorphingButton_mb_startAngle, 0);
-        float endAngle =   attr.getDimension(R.styleable.MorphingButton_mb_endAngle, 0);
+        float endAngle =   attr.getDimension(R.styleable.MorphingButton_mb_endAngle, 360);
 
         StateListDrawable background = new StateListDrawable();
         mDrawableNormal = createDrawable(color, strokeWidth, strokeColor, startAngle, endAngle);
