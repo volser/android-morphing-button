@@ -208,8 +208,8 @@ public class MorphingButton extends Button {
 
     private SemiCircleDrawable createDrawable(int color, float strokeWidth, int strokeColor,
                                               float startAngle, float endAngle) {
-        SemiCircleDrawable drawable = new SemiCircleDrawable(color, startAngle, endAngle);
-        drawable.strokeColor = strokeColor;
+        SemiCircleDrawable drawable = new SemiCircleDrawable(strokeColor, startAngle, endAngle);
+        drawable.fillColor = color;
         drawable.strokeWidth = strokeWidth;
 
         return drawable;
