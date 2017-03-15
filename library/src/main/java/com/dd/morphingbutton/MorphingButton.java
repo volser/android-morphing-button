@@ -173,8 +173,8 @@ public class MorphingButton extends Button {
         int color =         attr.getColor(R.styleable.MorphingButton_mb_color, resources.getColor(R.color.mb_blue));
         int pressedColor =  attr.getColor(R.styleable.MorphingButton_mb_pressedColor, resources.getColor(R.color.mb_blue_dark));
         int strokeColor =   attr.getColor(R.styleable.MorphingButton_mb_strokeColor, resources.getColor(R.color.mb_blue));
-        int strokeWidth =   attr.getDimension(R.styleable.MorphingButton_mb_strokeWidth, 0);
-        int cornerRadius =  attr.getDimension(R.styleable.MorphingButton_mb_cornerRadius, 2);
+        float strokeWidth =   attr.getDimension(R.styleable.MorphingButton_mb_strokeWidth, 0);
+        int cornerRadius =  (int) attr.getDimension(R.styleable.MorphingButton_mb_cornerRadius, 2);
 
         StateListDrawable background = new StateListDrawable();
         mDrawableNormal = createDrawable(color, cornerRadius, strokeWidth, strokeColor);
@@ -190,13 +190,13 @@ public class MorphingButton extends Button {
         setBackgroundCompat(background);
     }
 
-    private StrokeGradientDrawable createDrawable(int color, int cornerRadius, int strokeWidth, int strokeColor) {
+    private StrokeGradientDrawable createDrawable(int color, int cornerRadius, float strokeWidth, int strokeColor) {
         StrokeGradientDrawable drawable = new StrokeGradientDrawable(new GradientDrawable());
         drawable.getGradientDrawable().setShape(GradientDrawable.RECTANGLE);
         drawable.setColor(color);
         drawable.setCornerRadius(cornerRadius);
         drawable.setStrokeColor(strokeColor);
-        drawable.setStrokeWidth(strokeWidth);
+        drawable.setStrokeWidth((int)strokeWidth);
 
         return drawable;
     }

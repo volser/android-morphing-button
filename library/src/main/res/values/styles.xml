@@ -1,6 +1,6 @@
 <resources>
     
-    <declare-styleable name="CircularProgressButton">
+    <declare-styleable name="MorphingButton">
         <attr name="mb_color" format="color"/>
         <attr name="mb_strokeColor" format="color"/>
         <attr name="mb_pressedColor" format="color"/>
