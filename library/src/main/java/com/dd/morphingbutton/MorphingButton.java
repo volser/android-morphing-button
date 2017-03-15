@@ -20,13 +20,7 @@ import android.widget.Button;
 public class MorphingButton extends Button {
 
     private Padding mPadding;
-    private int mHeight;
-    private int mWidth;
-    private int mColor;
-    private int mStrokeWidth;
-    private int mStrokeColor;
-    private float mStartAngle;
-    private float mEndAngle;
+    private Params mParams;
 
     protected boolean mAnimationInProgress;
 
@@ -51,9 +45,9 @@ public class MorphingButton extends Button {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        if (mHeight == 0 && mWidth == 0 && w != 0 && h != 0) {
-            mHeight = getHeight();
-            mWidth = getWidth();
+        if (mParams.height == 0 && mParams.width == 0 && w != 0 && h != 0) {
+            mParams.height = getHeight();
+            mParams.height = getWidth();
         }
     }
 
@@ -70,22 +64,12 @@ public class MorphingButton extends Button {
             mDrawablePressed.startAngle = params.startAngle;
             mDrawablePressed.endAngle = params.endAngle;
 
-//            mDrawablePressed.setColor(params.colorPressed);
-//            mDrawablePressed.setCornerRadius(params.cornerRadius);
-//            mDrawablePressed.setStrokeColor(params.strokeColor);
-//            mDrawablePressed.setStrokeWidth(params.strokeWidth);
-
             if (params.duration == 0) {
                 morphWithoutAnimation(params);
             } else {
                 morphWithAnimation(params);
             }
-
-            mStartAngle = params.startAngle;
-            mEndAngle = params.endAngle;
-            mColor = params.color;
-            mStrokeWidth = params.strokeWidth;
-            mStrokeColor = params.strokeColor;
+            mParams = params;
         }
     }
 
@@ -96,13 +80,13 @@ public class MorphingButton extends Button {
         setPadding(mPadding.left, mPadding.top, mPadding.right, mPadding.bottom);
 
         MorphingAnimation.Params animationParams = MorphingAnimation.Params.create(this)
-                .color(mColor, params.color)
-                .strokeWidth(mStrokeWidth, params.strokeWidth)
-                .strokeColor(mStrokeColor, params.strokeColor)
+                .color(mParams.color, params.color)
+                .strokeWidth(mParams.strokeWidth, params.strokeWidth)
+                .strokeColor(mParams.strokeColor, params.strokeColor)
                 .height(getHeight(), params.height)
                 .width(getWidth(), params.width)
                 .duration(params.duration)
-                .angle(mStartAngle, mEndAngle, params.startAngle, params.endAngle)
+                .angle(mParams.startAngle, mParams.endAngle, params.startAngle, params.endAngle)
                 .listener(new MorphingAnimation.Listener() {
                     @Override
                     public void onAnimationEnd() {
@@ -195,10 +179,13 @@ public class MorphingButton extends Button {
         mDrawableNormal = createDrawable(color, strokeWidth, strokeColor, startAngle, endAngle);
         mDrawablePressed = createDrawable(pressedColor, strokeWidth, strokeColor, startAngle, endAngle);
 
-        mColor = color;
-        mStrokeColor = strokeColor;
-        mStartAngle = startAngle;
-        mEndAngle = endAngle;
+        mParams = Params.create()
+                .color(color)
+                .colorPressed(pressedColor)
+                .strokeWidth(strokeWidth)
+                .strokeColor(strokeColor)
+                .startAngle(startAngle)
+                .endAngle(endAngle);
 
         background.addState(new int[]{android.R.attr.state_pressed}, mDrawablePressed);
         background.addState(StateSet.WILD_CARD, mDrawableNormal);
@@ -255,7 +242,7 @@ public class MorphingButton extends Button {
         private int colorPressed;
         private int duration;
         private int icon;
-        private int strokeWidth;
+        private float strokeWidth;
         private int strokeColor;
         private float startAngle;
         private float endAngle;
@@ -317,7 +304,7 @@ public class MorphingButton extends Button {
             return this;
         }
 
-        public Params strokeWidth(int strokeWidth) {
+        public Params strokeWidth(float strokeWidth) {
             this.strokeWidth = strokeWidth;
             return this;
         }

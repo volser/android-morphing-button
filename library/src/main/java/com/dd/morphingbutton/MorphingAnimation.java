@@ -23,8 +23,8 @@ public class MorphingAnimation {
 
         private int duration;
 
-        private int fromStrokeWidth;
-        private int toStrokeWidth;
+        private float fromStrokeWidth;
+        private float toStrokeWidth;
 
         private int fromStrokeColor;
         private int toStrokeColor;
@@ -74,7 +74,7 @@ public class MorphingAnimation {
             return this;
         }
 
-        public Params strokeWidth(int fromStrokeWidth, int toStrokeWidth) {
+        public Params strokeWidth(float fromStrokeWidth, float toStrokeWidth) {
             this.fromStrokeWidth = fromStrokeWidth;
             this.toStrokeWidth = toStrokeWidth;
             return this;
@@ -111,7 +111,7 @@ public class MorphingAnimation {
                 ObjectAnimator.ofFloat(background, "endAngle", mParams.fromEndAngle, mParams.toEndAngle);
 
         ObjectAnimator strokeWidthAnimation =
-                ObjectAnimator.ofInt(background, "strokeWidth", mParams.fromStrokeWidth, mParams.toStrokeWidth);
+                ObjectAnimator.ofFloat(background, "strokeWidth", mParams.fromStrokeWidth, mParams.toStrokeWidth);
 
         ObjectAnimator strokeColorAnimation = ObjectAnimator.ofInt(background, "strokeColor", mParams.fromStrokeColor, mParams.toStrokeColor);
         strokeColorAnimation.setEvaluator(new ArgbEvaluator());
