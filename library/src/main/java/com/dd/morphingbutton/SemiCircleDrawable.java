@@ -57,12 +57,12 @@ public class SemiCircleDrawable extends Drawable {
 //            }
 //        }
 
-
-        bounds.left += this.strokeWidth;
-        bounds.right -= this.strokeWidth;
-        bounds.top += this.strokeWidth;
-        bounds.bottom -= this.strokeWidth;
-        rectF.set(bounds);
+        Rect circleBounds = bounds;
+        circleBounds.left += this.strokeWidth;
+        circleBounds.right -= this.strokeWidth;
+        circleBounds.top += this.strokeWidth;
+        circleBounds.bottom -= this.strokeWidth;
+        rectF.set(circleBounds);
 
         Paint strokePaint = new Paint();
         strokePaint.setColor(this.strokeColor);
