@@ -55,6 +55,11 @@ public class MorphingButton extends Button {
         return mDrawableNormal;
     }
 
+    public Params getParams()
+    {
+        return this.mParams;
+    }
+
     public void morph(@NonNull Params params) {
         if (!mAnimationInProgress) {
 
